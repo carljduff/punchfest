@@ -158,46 +158,41 @@ class Human(pygame.sprite.Sprite):
 #
 #     pygame.quit()
 
-
-pygame.init()
-print("Game started")  # Debug print for browser console
-screen = pygame.display.set_mode((960, 540))  # Changed resolution for browser compatibility
-pygame.display.set_caption("Smack a hoe!")
-pygame.mouse.set_visible(False)
-
-background = pygame.Surface(screen.get_size(), pygame.SRCALPHA)
-background = background.convert()
-background.fill((106, 93, 123))
-
-font = pygame.font.Font(None, 64)
-text = font.render("Pummel the WHORE!!!", True, (10, 10, 10))
-textpos = text.get_rect(centerx=background.get_width() / 2, y=10)
-background.blit(text, textpos)
-
-screen.blit(background, (0, 0))
-pygame.display.flip()
-
-whiff_sound = load_sound("whiff.wav")
-punch_sound = load_sound("punch.wav")
-
-human = Human()
-fist = Fist()
-all_sprites = pygame.sprite.Group(human, fist)
-clock = pygame.time.Clock()
-
-score = 0
-bonus_started = False
-
-score_font = pygame.font.Font(None, 48)
-
-going = True
-
 async def main():
-    global going
-    global human
-    global score
-    global bonus_started
-    global fist
+    pygame.init()
+    print("Game started")  # Debug print for browser console
+    screen = pygame.display.set_mode((960, 540))  # Changed resolution for browser compatibility
+    pygame.display.set_caption("Smack a hoe!")
+    pygame.mouse.set_visible(False)
+
+    background = pygame.Surface(screen.get_size(), pygame.SRCALPHA)
+    background = background.convert()
+    background.fill((106, 93, 123))
+
+    font = pygame.font.Font(None, 64)
+    text = font.render("Pummel the WHORE!!!", True, (10, 10, 10))
+    textpos = text.get_rect(centerx=background.get_width() / 2, y=10)
+    background.blit(text, textpos)
+
+    screen.blit(background, (0, 0))
+    pygame.display.flip()
+
+    whiff_sound = load_sound("whiff.wav")
+    punch_sound = load_sound("punch.wav")
+
+    human = Human()
+    fist = Fist()
+    all_sprites = pygame.sprite.Group(human, fist)
+    clock = pygame.time.Clock()
+
+    score = 0
+    bonus_started = False
+
+    score_font = pygame.font.Font(None, 48)
+
+    going = True
+
+
 
     while going:
         clock.tick(60)
@@ -215,7 +210,7 @@ async def main():
                         human.kill()
                         human = Human("bonus_human.png", scale=0.3)
 
-                        # Rebuild sprite group with fist added last so it's drawn on top
+                            # Rebuild sprite group with fist added last so it's drawn on top
                         all_sprites.empty()
                         all_sprites.add(human, fist)
                 else:
@@ -233,7 +228,7 @@ async def main():
 
         pygame.display.flip()
 
-        #changed placement
+            #changed placement
         await asyncio.sleep(0)
 
 
