@@ -113,7 +113,7 @@ async def main():
     background.fill((106, 93, 123))
 
     font = pygame.font.Font(None, 64)
-    text = font.render("Pummel the WHORE!!!", True, (10, 10, 10))
+    text = font.render("Pummel the WHORE!!! Score 5 for bonus round!", True, (10, 10, 10))
     textpos = text.get_rect(centerx=background.get_width() / 2, y=10)
     background.blit(text, textpos)
 
