@@ -7,12 +7,15 @@ if not pygame.font:
 if not pygame.mixer:
     print("Warning, sound disabled")
 
-# Updated to assume all assets are in same folder as the script
 def load_image(name, colorkey=None, scale=1):
-    fullname = name  # In Pygbag, all files must be in the root folder
-    image = pygame.image.load(fullname).convert_alpha()
-    image = pygame.transform.scale_by(image, scale)
-    return image, image.get_rect()
+    fullname = name
+    try:
+        image = pygame.image.load(fullname).convert_alpha()
+        image = pygame.transform.scale_by(image, scale)
+        return image, image.get_rect()
+    except Exception as e:
+        print(f"Failed to load image {fullname}: {e}")
+        return pygame.Surface((50, 50)), pygame.Rect(0, 0, 50, 50)
 
 def load_sound(name):
     class NoneSound:
@@ -23,8 +26,12 @@ def load_sound(name):
         return NoneSound()
 
     fullname = name
-    sound = pygame.mixer.Sound(fullname)
-    return sound
+    try:
+        sound = pygame.mixer.Sound(fullname)
+        return sound
+    except Exception as e:
+        print(f"Failed to load sound {fullname}: {e}")
+        return NoneSound()
 
 class Fist(pygame.sprite.Sprite):
     def __init__(self):
@@ -89,79 +96,10 @@ class Human(pygame.sprite.Sprite):
             self.dizzy = True
             self.original = self.image
 
-# def main():
-#     pygame.init()
-#     print("Game started")  # Debug print for browser console
-#     screen = pygame.display.set_mode((960, 540))  # Changed resolution for browser compatibility
-#     pygame.display.set_caption("Punch Fest")
-#     pygame.mouse.set_visible(False)
-#
-#     background = pygame.Surface(screen.get_size(), pygame.SRCALPHA)
-#     background = background.convert()
-#     background.fill((106, 93, 123))
-#
-#     font = pygame.font.Font(None, 64)
-#     text = font.render("Pummel to Score!", True, (10, 10, 10))
-#     textpos = text.get_rect(centerx=background.get_width() / 2, y=10)
-#     background.blit(text, textpos)
-#
-#     screen.blit(background, (0, 0))
-#     pygame.display.flip()
-#
-#     whiff_sound = load_sound("whiff.wav")
-#     punch_sound = load_sound("punch.wav")
-#
-#     human = Human()
-#     fist = Fist()
-#     all_sprites = pygame.sprite.Group(human, fist)
-#     clock = pygame.time.Clock()
-#
-#     score = 0
-#     bonus_started = False
-#
-#     score_font = pygame.font.Font(None, 48)
-#
-#     going = True
-#     while going:
-#         clock.tick(60)
-#         for event in pygame.event.get():
-#             if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
-#                 going = False
-#             elif event.type == pygame.MOUSEBUTTONDOWN:
-#                 if fist.punch(human):
-#                     punch_sound.play()
-#                     human.punched()
-#                     score += 1
-#
-#                     if score == 3 and not bonus_started:
-#                         bonus_started = True
-#                         human.kill()
-#                         human = Human("bonus_human.png", scale=0.3)
-#
-#                         # Rebuild sprite group with fist added last so it's drawn on top
-#                         all_sprites.empty()
-#                         all_sprites.add(human, fist)
-#                 else:
-#                     whiff_sound.play()
-#             elif event.type == pygame.MOUSEBUTTONUP:
-#                 fist.unpunch()
-#
-#         all_sprites.update()
-#
-#         screen.blit(background, (0, 0))
-#         all_sprites.draw(screen)
-#
-#         score_text = score_font.render(f"Score: {score}", True, (255, 255, 255))
-#         screen.blit(score_text, (20, 20))
-#
-#         pygame.display.flip()
-#
-#     pygame.quit()
-
 async def main():
     pygame.init()
-    print("Game started")  # Debug print for browser console
-    screen = pygame.display.set_mode((960, 540))  # Changed resolution for browser compatibility
+    print("Game started")
+    screen = pygame.display.set_mode((960, 540))
     pygame.display.set_caption("Smack a hoe!")
     pygame.mouse.set_visible(False)
 
@@ -191,9 +129,6 @@ async def main():
     score_font = pygame.font.Font(None, 48)
 
     going = True
-
-
-
     while going:
         clock.tick(60)
         for event in pygame.event.get():
@@ -209,8 +144,6 @@ async def main():
                         bonus_started = True
                         human.kill()
                         human = Human("bonus_human.png", scale=0.3)
-
-                            # Rebuild sprite group with fist added last so it's drawn on top
                         all_sprites.empty()
                         all_sprites.add(human, fist)
                 else:
@@ -228,10 +161,7 @@ async def main():
 
         pygame.display.flip()
 
-            #changed placement
         await asyncio.sleep(0)
-
-
 
     pygame.quit()
 
