@@ -61,6 +61,8 @@ class Human(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.image, self.rect = load_image(image_file, scale=scale)
         screen = pygame.display.get_surface()
+        if screen is None:
+            screen = pygame.display.set_mode((960, 540))
         self.area = screen.get_rect()
         self.rect.topleft = 10, 90
         self.move = 18
