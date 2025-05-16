@@ -105,7 +105,7 @@ async def main():
     pygame.init()
     print("Game started")
     screen = pygame.display.set_mode((960, 540))
-    pygame.display.set_caption("Smack a hoe!")
+    pygame.display.set_caption("Pummel the whore!!")
     pygame.mouse.set_visible(False)
 
     background = pygame.Surface(screen.get_size(), pygame.SRCALPHA)
@@ -113,7 +113,7 @@ async def main():
     background.fill((106, 93, 123))
 
     font = pygame.font.Font(None, 64)
-    text = font.render("Pummel the WHORE!!! Score 5 for bonus round!", True, (10, 10, 10))
+    text = font.render("Score 5 for Bonus!", True, (10, 10, 10))
     textpos = text.get_rect(centerx=background.get_width() / 2, y=10)
     background.blit(text, textpos)
 
@@ -145,17 +145,34 @@ async def main():
                     human.punched()
                     score += 1
 
-                    if score == 5 and not bonus_started:
+                    if score == 5:
                         bonus_started = True
-                        human.kill()
-                        human = Human("bonus_human.png", scale=0.3)
-                        all_sprites.empty()
-                        all_sprites.add(human, fist)
 
+                    if bonus_started:
+                        # Swap the character every time a punch lands
+                        all_sprites.remove(human)
+                        human.kill()
                         if score % 2 == 0:
-                            human = Human("mollie.png", scale = 0.25)
+                            human = Human("mollie.png", scale=0.25)
                         else:
-                            human = Human("bonus_human.png", scale = 0.3)
+                            human = Human("bonus_human.png", scale=0.3)
+                        all_sprites.add(human)
+                # if fist.punch(human):
+                #     punch_sound.play()
+                #     human.punched()
+                #     score += 1
+                #
+                #     if score == 5 and not bonus_started:
+                #         bonus_started = True
+                #         human.kill()
+                #         human = Human("bonus_human.png", scale=0.3)
+                #         all_sprites.empty()
+                #         all_sprites.add(human, fist)
+                #
+                #         if score % 2 == 0:
+                #             human = Human("mollie.png", scale = 0.25)
+                #         else:
+                #             human = Human("bonus_human.png", scale = 0.3)
                 else:
                     whiff_sound.play()
             elif event.type == pygame.MOUSEBUTTONUP:
