@@ -157,6 +157,7 @@ async def main():
                         else:
                             human = Human("bonus_human.png", scale=0.3)
                         all_sprites.add(human)
+                        all_sprites.add(fist)
                 # if fist.punch(human):
                 #     punch_sound.play()
                 #     human.punched()
