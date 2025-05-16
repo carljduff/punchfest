@@ -60,9 +60,12 @@ class Human(pygame.sprite.Sprite):
     def __init__(self, image_file="mollie.png", scale=0.25):
         pygame.sprite.Sprite.__init__(self)
         self.image, self.rect = load_image(image_file, scale=scale)
+
         screen = pygame.display.get_surface()
         if screen is None:
+            print("Fallback: creating display surface")
             screen = pygame.display.set_mode((960, 540))
+
         self.area = screen.get_rect()
         self.rect.topleft = 10, 90
         self.move = 18
@@ -132,7 +135,7 @@ async def main():
 
     going = True
     while going:
-
+        clock.tick(60)
         for event in pygame.event.get():
             if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
                 going = False
@@ -162,9 +165,12 @@ async def main():
         screen.blit(score_text, (20, 20))
 
         pygame.display.flip()
-        clock.tick(60)
+
         await asyncio.sleep(0)
 
     pygame.quit()
 
-asyncio.run(main())
+try:
+    asyncio.run(main())
+except Exception as e:
+    print(f"Unhandled error: {e}")
