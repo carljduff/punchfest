@@ -130,7 +130,7 @@ async def main():
 
     going = True
     while going:
-        clock.tick(60)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
                 going = False
@@ -160,8 +160,8 @@ async def main():
         screen.blit(score_text, (20, 20))
 
         pygame.display.flip()
-
-        await asyncio.sleep(0)
+        clock.tick(60)
+        await asyncio.sleep(0.001)
 
     pygame.quit()
 
