@@ -125,7 +125,10 @@ async def main():
 
     human = Human()
     fist = Fist()
-    all_sprites = pygame.sprite.Group(human, fist)
+    # all_sprites = pygame.sprite.Group(human, fist)
+    all_sprites = pygame.sprite.LayeredUpdates()
+    all_sprites.add(human, layer = 0)
+    all_sprites.add(fist, layer = 1)
     clock = pygame.time.Clock()
 
     score = 0
@@ -148,16 +151,18 @@ async def main():
                     if score == 5:
                         bonus_started = True
 
+                    # Inside punch logic after score += 1
                     if bonus_started:
-                        # Swap the character every time a punch lands
                         all_sprites.remove(human)
                         human.kill()
+
                         if score % 2 == 0:
                             human = Human("mollie.png", scale=0.25)
                         else:
                             human = Human("bonus_human.png", scale=0.3)
-                        all_sprites.add(human)
-                        all_sprites.add(fist)
+
+                        all_sprites.add(human, layer=0)  # Draw below
+                        all_sprites.add(fist, layer=1)  # Ensure fist stays on top
                 # if fist.punch(human):
                 #     punch_sound.play()
                 #     human.punched()
