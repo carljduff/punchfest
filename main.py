@@ -145,12 +145,17 @@ async def main():
                     human.punched()
                     score += 1
 
-                    if score == 3 and not bonus_started:
+                    if score == 5 and not bonus_started:
                         bonus_started = True
                         human.kill()
                         human = Human("bonus_human.png", scale=0.3)
                         all_sprites.empty()
                         all_sprites.add(human, fist)
+
+                        if score % 2 == 0:
+                            human = Human("mollie.png", scale = 0.25)
+                        else:
+                            human = Human("bonus_human.png", scale = 0.3)
                 else:
                     whiff_sound.play()
             elif event.type == pygame.MOUSEBUTTONUP:
